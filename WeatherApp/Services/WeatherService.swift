@@ -32,10 +32,18 @@ final class WeatherService {
         }.resume()
     }
 
-    func hourlyForecast(for city: String, completion: @escaping (Result<HourlyForecast, ApiError>) -> Void) {
-        let currentWeatherURL = URL(string: "https://api.openweathermap.org/data/2.5/forecast/hourly?q=\(city)&appid=\(apiKey)")!
+    func hourlyForecast(for city: String, hours: Int = 3, completion: @escaping (Result<HourlyForecast, ApiError>) -> Void) {
+        let currentWeatherURL = URL(string: "https://api.openweathermap.org/data/2.5/forecast?q=\(city)&appid=\(apiKey)")!
+        print(currentWeatherURL.absoluteString)
         URLSession.shared.dataTask(with: currentWeatherURL) { [weak self] data, response, error in
-            self?.handleResponse(data: data, response: response, error: error, completion: completion)
+            self?.handleResponse(data: data, response: response, error: error) { (result: Result<HourlyForecast, ApiError>) in
+                switch result {
+                case .failure(let error):
+                    completion(.failure(error))
+                case .success(let forecast):
+                    print("hourly count: \(forecast.list.count)")
+                }
+            }
         }.resume()
     }
 
