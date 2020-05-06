@@ -59,7 +59,12 @@ class ViewController: UIViewController {
         }
     }
 
-
+    @IBAction func showHourlyForecastTapped(_ sender: UIButton) {
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        if let hourlyVC = mainStoryboard.instantiateViewController(withIdentifier: "HourlyForecastViewController") as? HourlyForecastViewController {
+            present(hourlyVC, animated: true, completion: nil)
+        }
+    }
 
     private func showError(title: String, message: String, completion: (() -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)

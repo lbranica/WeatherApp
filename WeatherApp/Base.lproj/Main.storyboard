@@ -46,6 +46,9 @@
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c88-25-e9p">
                                 <rect key="frame" x="8" y="824" width="398" height="30"/>
                                 <state key="normal" title="Show hourly forecast"/>
+                                <connections>
+                                    <action selector="showHourlyForecastTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QQ6-5B-Rg9"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -73,6 +76,46 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="137.68115942028987" y="138.61607142857142"/>
+        </scene>
+        <!--Hourly Forecast View Controller-->
+        <scene sceneID="rFF-dv-W8u">
+            <objects>
+                <viewController storyboardIdentifier="HourlyForecastViewController" id="yLp-cb-q0w" customClass="HourlyForecastViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="xGi-r5-swY">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hourly forecast" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h54-0G-zSH">
+                                <rect key="frame" x="148" y="437.5" width="118" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4qF-K5-xaM">
+                                <rect key="frame" x="8" y="824" width="398" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="tMD-Gq-jMB"/>
+                                </constraints>
+                                <state key="normal" title="Close"/>
+                                <connections>
+                                    <action selector="closeButtonTapped:" destination="yLp-cb-q0w" eventType="touchUpInside" id="iUc-Gj-DAV"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="4bn-xf-FFR" firstAttribute="trailing" secondItem="4qF-K5-xaM" secondAttribute="trailing" constant="8" id="9Qj-Ej-i6j"/>
+                            <constraint firstItem="h54-0G-zSH" firstAttribute="centerX" secondItem="xGi-r5-swY" secondAttribute="centerX" id="EKz-yx-mGb"/>
+                            <constraint firstItem="4bn-xf-FFR" firstAttribute="bottom" secondItem="4qF-K5-xaM" secondAttribute="bottom" constant="8" id="M6a-9a-kZ6"/>
+                            <constraint firstItem="4qF-K5-xaM" firstAttribute="leading" secondItem="4bn-xf-FFR" secondAttribute="leading" constant="8" id="Ubq-IO-ubA"/>
+                            <constraint firstItem="h54-0G-zSH" firstAttribute="centerY" secondItem="xGi-r5-swY" secondAttribute="centerY" id="cpZ-FL-YH2"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="4bn-xf-FFR"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9hm-Pe-Xtp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1171" y="123"/>
         </scene>
     </scenes>
 </document>
