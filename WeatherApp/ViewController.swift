@@ -141,50 +141,42 @@ extension ViewController: UITableViewDelegate {
 extension ViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section == 0 ? "Current weather" : "3 hours forecast"
+        return "Current weather"
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let weather = currentWeather else {
             return 0
         }
-        if section == 0 {
-            return weather.weather.count + 1
-        } else {
-            return 0//todo handle 3 hours forecast
-        }
+        return weather.weather.count + 1
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let currentWeather = currentWeather else {
             return UITableViewCell()
         }
-        if indexPath.section == 0 {
-            if indexPath.row == 0 {
-                if let cell = tableView.dequeueReusableCell(withIdentifier: currentWeatherCellID, for: indexPath) as? CurrentWeatherCell {
-                    cell.setup(for: currentWeather)
-                    return cell
-                } else {
-                    return UITableViewCell()
-                }
+        if indexPath.row == 0 {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: currentWeatherCellID, for: indexPath) as? CurrentWeatherCell {
+                cell.setup(for: currentWeather)
+                return cell
             } else {
-                let weatherIndex = indexPath.row - 1
-                if weatherIndex >= 0 && weatherIndex < currentWeather.weather.count {
-                    let cell = tableView.dequeueReusableCell(withIdentifier: weatherCellID, for: indexPath)
-                    let weather = currentWeather.weather[weatherIndex]
-                    cell.textLabel?.text = weather.description
-                    print(weather.description)
-                    return cell
-                }
+                return UITableViewCell()
             }
-            return UITableViewCell()
         } else {
-            return UITableViewCell()
+            let weatherIndex = indexPath.row - 1
+            if weatherIndex >= 0 && weatherIndex < currentWeather.weather.count {
+                let cell = tableView.dequeueReusableCell(withIdentifier: weatherCellID, for: indexPath)
+                let weather = currentWeather.weather[weatherIndex]
+                cell.textLabel?.text = weather.description
+                print(weather.description)
+                return cell
+            }
         }
+        return UITableViewCell()
     }
 
 }
