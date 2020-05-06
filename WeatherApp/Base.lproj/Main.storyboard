@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="l2u-EW-h7T">
-                                <rect key="frame" x="0.0" y="110" width="414" height="752"/>
+                                <rect key="frame" x="0.0" y="110" width="414" height="706"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </tableView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Gb8-3p-pvW">
@@ -43,15 +43,22 @@
                                     <constraint firstAttribute="height" constant="50" id="tOI-1h-uIX"/>
                                 </constraints>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c88-25-e9p">
+                                <rect key="frame" x="8" y="824" width="398" height="30"/>
+                                <state key="normal" title="Show hourly forecast"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="l2u-EW-h7T" firstAttribute="top" secondItem="Gb8-3p-pvW" secondAttribute="bottom" constant="8" id="64u-BZ-pPz"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="c88-25-e9p" secondAttribute="trailing" constant="8" id="EFc-ky-yje"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Gb8-3p-pvW" secondAttribute="trailing" constant="8" id="LUj-V8-tbi"/>
+                            <constraint firstItem="c88-25-e9p" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="NTp-Mh-bfK"/>
                             <constraint firstItem="Gb8-3p-pvW" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="VkB-CH-hkj"/>
                             <constraint firstItem="l2u-EW-h7T" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="WDR-on-Kwy"/>
                             <constraint firstItem="l2u-EW-h7T" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="YVH-5V-VBW"/>
-                            <constraint firstItem="l2u-EW-h7T" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="hA1-Us-1mt"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="c88-25-e9p" secondAttribute="bottom" constant="8" id="aXJ-Z1-fL8"/>
+                            <constraint firstItem="c88-25-e9p" firstAttribute="top" secondItem="l2u-EW-h7T" secondAttribute="bottom" constant="8" id="e3P-ef-Mcv"/>
                             <constraint firstItem="Gb8-3p-pvW" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="tQj-Uc-rP9"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -59,6 +66,7 @@
                     <connections>
                         <outlet property="cityField" destination="9gq-dO-yDZ" id="S1r-Rh-LYt"/>
                         <outlet property="showButton" destination="jLp-Ax-Tpz" id="7J0-UA-UP5"/>
+                        <outlet property="showHourlyButton" destination="c88-25-e9p" id="Q9S-LD-9Xu"/>
                         <outlet property="tableView" destination="l2u-EW-h7T" id="dHh-fj-A0f"/>
                     </connections>
                 </viewController>

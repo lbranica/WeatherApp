@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
     @IBOutlet var showButton: UIButton!
     @IBOutlet var cityField: UITextField!
+    @IBOutlet var showHourlyButton: UIButton!
 
     private var weatherService: WeatherService!
     private let refreshControl = UIRefreshControl()
@@ -20,6 +21,12 @@ class ViewController: UIViewController {
 
     private let weatherCellID = "WeatherCell"
     private let currentWeatherCellID = "CurrentWeatherCell"
+
+    private var hoursForecastButtonEnabled: Bool = false {
+        didSet {
+            showHourlyButton.isEnabled = hoursForecastButtonEnabled
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,8 +49,10 @@ class ViewController: UIViewController {
                 switch result {
                 case .success(let currentWeather):
                     self.currentWeather = currentWeather
+                    self.hoursForecastButtonEnabled = true
                     self.updateView()
                 case .failure(let error):
+                    self.hoursForecastButtonEnabled = false
                     self.showError(title: "An error occured", message: error.localizedDescription)
                 }
             }
@@ -73,7 +82,9 @@ class ViewController: UIViewController {
                     case .success(let currentWeather):
                         self.currentWeather = currentWeather
                         self.updateView()
+                        self.hoursForecastButtonEnabled = true
                     case .failure(let error):
+                        self.hoursForecastButtonEnabled = false
                         self.showError(title: "An error occured", message: error.localizedDescription)
                 }
             }
@@ -81,6 +92,7 @@ class ViewController: UIViewController {
     }
 
     @objc func cityFieldDidChange(_ textField: UITextField) {
+        hoursForecastButtonEnabled = false
         if let city = textField.text, !city.isEmpty {
             refreshControl.attributedTitle = NSAttributedString(string: "Fetching weather data for \(city)...")
             if #available(iOS 10.0, *) {
