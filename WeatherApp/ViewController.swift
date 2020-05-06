@@ -18,6 +18,9 @@ class ViewController: UIViewController {
     private let refreshControl = UIRefreshControl()
     private var currentWeather: CurrentWeather?
 
+    private let weatherCellID = "WeatherCell"
+    private let currentWeatherCellID = "CurrentWeatherCell"
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -47,10 +50,7 @@ class ViewController: UIViewController {
         }
     }
 
-    private func setupTableView() {
-        tableView.delegate = self
-        tableView.dataSource = self
-    }
+
 
     private func showError(title: String, message: String, completion: (() -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -98,9 +98,15 @@ class ViewController: UIViewController {
     }
 
     private func updateView() {
-        if let weather = currentWeather {
-            print(currentWeather)
-        }
+        tableView.reloadData()
+    }
+
+    private func setupTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: weatherCellID)
+        let nib = UINib(nibName: "CurrentWeatherCell", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: currentWeatherCellID)
     }
 
     private func setupRefreshControl() {
@@ -125,17 +131,44 @@ extension ViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let weather = currentWeather else {
+            return 0
+        }
         if section == 0 {
-            return 1
+            return weather.weather.count + 1
         } else {
-            return 1//todo
+            return 0//todo handle 3 hours forecast
         }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        guard let currentWeather = currentWeather else {
+            return UITableViewCell()
+        }
+        if indexPath.section == 0 {
+            if indexPath.row == 0 {
+                if let cell = tableView.dequeueReusableCell(withIdentifier: currentWeatherCellID, for: indexPath) as? CurrentWeatherCell {
+                    cell.setup(for: currentWeather)
+                    return cell
+                } else {
+                    return UITableViewCell()
+                }
+            } else {
+                let weatherIndex = indexPath.row - 1
+                if weatherIndex >= 0 && weatherIndex < currentWeather.weather.count {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: weatherCellID, for: indexPath)
+                    let weather = currentWeather.weather[weatherIndex]
+                    cell.textLabel?.text = weather.description
+                    print(weather.description)
+                    return cell
+                }
+            }
+            return UITableViewCell()
+        } else {
+            return UITableViewCell()
+        }
     }
 
 }

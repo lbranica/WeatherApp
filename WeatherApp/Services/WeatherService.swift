@@ -32,6 +32,13 @@ final class WeatherService {
         }.resume()
     }
 
+    func hourlyForecast(for city: String, completion: @escaping (Result<HourlyForecast, ApiError>) -> Void) {
+        let currentWeatherURL = URL(string: "https://api.openweathermap.org/data/2.5/forecast/hourly?q=\(city)&appid=\(apiKey)")!
+        URLSession.shared.dataTask(with: currentWeatherURL) { [weak self] data, response, error in
+            self?.handleResponse(data: data, response: response, error: error, completion: completion)
+        }.resume()
+    }
+
     private func handleResponse<T: Decodable>(data: Data?, response: URLResponse?, error: Error?, completion: (Result<T, ApiError>) -> Void) {
         guard let apiResponse = response as? HTTPURLResponse else {
             completion(.failure(.wrongResponse))
