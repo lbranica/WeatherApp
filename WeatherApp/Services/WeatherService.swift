@@ -17,6 +17,7 @@ final class WeatherService {
         case networkError
         case parsingError
         case serverError
+        case wrongURL
     }
 
     private let apiKey: String
@@ -26,25 +27,30 @@ final class WeatherService {
     }
 
     func currentWeather(for city: String, completion: @escaping (Result<CurrentWeather, ApiError>) -> Void) {
-        let currentWeatherURL = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(city)&appid=\(apiKey)")!
-        URLSession.shared.dataTask(with: currentWeatherURL) { [weak self] data, response, error in
-            self?.handleResponse(data: data, response: response, error: error, completion: completion)
-        }.resume()
+        if let currentWeatherURL = queryUrlFor(city: city, apiUrl: "https://api.openweathermap.org/data/2.5/weather") {
+            URLSession.shared.dataTask(with: currentWeatherURL) { [weak self] data, response, error in
+                self?.handleResponse(data: data, response: response, error: error, completion: completion)
+            }.resume()
+        } else {
+            completion(.failure(.wrongURL))
+        }
     }
 
-    func hourlyForecast(for city: String, hours: Int = 3, completion: @escaping (Result<HourlyForecast, ApiError>) -> Void) {
-        let currentWeatherURL = URL(string: "https://api.openweathermap.org/data/2.5/forecast?q=\(city)&appid=\(apiKey)")!
-        print(currentWeatherURL.absoluteString)
-        URLSession.shared.dataTask(with: currentWeatherURL) { [weak self] data, response, error in
-            self?.handleResponse(data: data, response: response, error: error) { (result: Result<HourlyForecast, ApiError>) in
-                switch result {
-                case .failure(let error):
-                    completion(.failure(error))
-                case .success(let forecast):
-                    completion(.success(forecast))
+    func hourlyForecast(for city: String, completion: @escaping (Result<HourlyForecast, ApiError>) -> Void) {
+        if let currentWeatherURL = queryUrlFor(city: city, apiUrl: "https://api.openweathermap.org/data/2.5/forecast") {
+            URLSession.shared.dataTask(with: currentWeatherURL) { [weak self] data, response, error in
+                self?.handleResponse(data: data, response: response, error: error) { (result: Result<HourlyForecast, ApiError>) in
+                    switch result {
+                    case .failure(let error):
+                        completion(.failure(error))
+                    case .success(let forecast):
+                        completion(.success(forecast))
+                    }
                 }
-            }
-        }.resume()
+            }.resume()
+        } else {
+            completion(.failure(.wrongURL))
+        }
     }
 
     private func handleResponse<T: Decodable>(data: Data?, response: URLResponse?, error: Error?, completion: (Result<T, ApiError>) -> Void) {
@@ -81,6 +87,16 @@ final class WeatherService {
         }
 
     }
+
+    private func queryUrlFor(city: String, apiUrl: String) -> URL? {
+        let queryItems = [
+            URLQueryItem(name: "q", value: city),
+            URLQueryItem(name: "appid", value: apiKey)
+        ]
+        var urlComponents = URLComponents(string: apiUrl)
+        urlComponents?.queryItems = queryItems
+        return urlComponents?.url
+    }
 }
 
 extension WeatherService.ApiError: LocalizedError {
@@ -98,6 +114,8 @@ extension WeatherService.ApiError: LocalizedError {
             return "Parsing error"
         case .serverError:
             return "Server error"
+        case .wrongURL:
+            return "Error with request URL"
         }
     }
 }

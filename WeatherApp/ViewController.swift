@@ -37,24 +37,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction func showTapped(_ sender: UIButton) {
-        guard let city = cityField.text, !city.isEmpty else {
-            showError(title: "An error occured", message: "Field city cannot be empty!")
-            return
-        }
-        weatherService.currentWeather(for: city) { [weak self] result in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let currentWeather):
-                    self.currentWeather = currentWeather
-                    self.hoursForecastButtonEnabled = true
-                    self.updateView()
-                case .failure(let error):
-                    self.hoursForecastButtonEnabled = false
-                    self.showError(title: "An error occured", message: error.localizedDescription)
-                }
-            }
-        }
+        loadWeatherData()
     }
 
     @IBAction func showHourlyForecastTapped(_ sender: UIButton) {
@@ -72,27 +55,7 @@ class ViewController: UIViewController {
     }
 
     @objc private func reloadWeatherData(_ sender: Any) {
-        guard let city = cityField.text, !city.isEmpty else {
-            showError(title: "An error occured", message: "Field city cannot be empty!") {
-                self.refreshControl.endRefreshing()
-            }
-            return
-        }
-        weatherService.currentWeather(for: city) { [weak self] result in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.refreshControl.endRefreshing()
-                switch result {
-                    case .success(let currentWeather):
-                        self.currentWeather = currentWeather
-                        self.updateView()
-                        self.hoursForecastButtonEnabled = true
-                    case .failure(let error):
-                        self.hoursForecastButtonEnabled = false
-                        self.showError(title: "An error occured", message: error.localizedDescription)
-                }
-            }
-        }
+        loadWeatherData()
     }
 
     @objc func cityFieldDidChange(_ textField: UITextField) {
@@ -118,7 +81,6 @@ class ViewController: UIViewController {
     }
 
     private func setupTableView() {
-        tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: weatherCellID)
         let nib = UINib(nibName: "CurrentWeatherCell", bundle: nil)
@@ -131,11 +93,33 @@ class ViewController: UIViewController {
 
     private func setupCityField() {
         cityField.addTarget(self, action: #selector(cityFieldDidChange(_:)), for: .editingChanged)
+        cityField.delegate = self
     }
-}
 
-extension ViewController: UITableViewDelegate {
-
+    private func loadWeatherData() {
+        view.endEditing(true)
+        guard let city = cityField.text, !city.isEmpty else {
+            showError(title: "An error occured", message: "Field city cannot be empty!") {
+                self.refreshControl.endRefreshing()
+            }
+            return
+        }
+        weatherService.currentWeather(for: city) { [weak self] result in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.refreshControl.endRefreshing()
+                switch result {
+                    case .success(let currentWeather):
+                        self.currentWeather = currentWeather
+                        self.updateView()
+                        self.hoursForecastButtonEnabled = true
+                    case .failure(let error):
+                        self.hoursForecastButtonEnabled = false
+                        self.showError(title: "An error occured", message: error.localizedDescription)
+                }
+            }
+        }
+    }
 }
 
 extension ViewController: UITableViewDataSource {
@@ -179,4 +163,11 @@ extension ViewController: UITableViewDataSource {
         return UITableViewCell()
     }
 
+}
+
+extension ViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        loadWeatherData()
+        return false
+    }
 }
