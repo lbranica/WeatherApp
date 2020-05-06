@@ -156,7 +156,6 @@ extension ViewController: UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: weatherCellID, for: indexPath)
                 let weather = currentWeather.weather[weatherIndex]
                 cell.textLabel?.text = weather.description
-                print(weather.description)
                 return cell
             }
         }
