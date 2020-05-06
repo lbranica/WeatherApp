@@ -85,12 +85,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hourly forecast" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h54-0G-zSH">
-                                <rect key="frame" x="148" y="437.5" width="118" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4qF-K5-xaM">
                                 <rect key="frame" x="8" y="824" width="398" height="30"/>
                                 <constraints>
@@ -101,17 +95,26 @@
                                     <action selector="closeButtonTapped:" destination="yLp-cb-q0w" eventType="touchUpInside" id="iUc-Gj-DAV"/>
                                 </connections>
                             </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="alJ-OI-rwR">
+                                <rect key="frame" x="8" y="52" width="398" height="764"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="4bn-xf-FFR" firstAttribute="trailing" secondItem="4qF-K5-xaM" secondAttribute="trailing" constant="8" id="9Qj-Ej-i6j"/>
-                            <constraint firstItem="h54-0G-zSH" firstAttribute="centerX" secondItem="xGi-r5-swY" secondAttribute="centerX" id="EKz-yx-mGb"/>
+                            <constraint firstItem="alJ-OI-rwR" firstAttribute="top" secondItem="4bn-xf-FFR" secondAttribute="top" constant="8" id="CZm-gw-Ipi"/>
                             <constraint firstItem="4bn-xf-FFR" firstAttribute="bottom" secondItem="4qF-K5-xaM" secondAttribute="bottom" constant="8" id="M6a-9a-kZ6"/>
+                            <constraint firstItem="4bn-xf-FFR" firstAttribute="trailing" secondItem="alJ-OI-rwR" secondAttribute="trailing" constant="8" id="OJK-4f-cUQ"/>
                             <constraint firstItem="4qF-K5-xaM" firstAttribute="leading" secondItem="4bn-xf-FFR" secondAttribute="leading" constant="8" id="Ubq-IO-ubA"/>
-                            <constraint firstItem="h54-0G-zSH" firstAttribute="centerY" secondItem="xGi-r5-swY" secondAttribute="centerY" id="cpZ-FL-YH2"/>
+                            <constraint firstItem="alJ-OI-rwR" firstAttribute="leading" secondItem="4bn-xf-FFR" secondAttribute="leading" constant="8" id="W60-0R-rso"/>
+                            <constraint firstItem="4qF-K5-xaM" firstAttribute="top" secondItem="alJ-OI-rwR" secondAttribute="bottom" constant="8" id="aUP-I9-C42"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="4bn-xf-FFR"/>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="alJ-OI-rwR" id="TUO-9u-EKb"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9hm-Pe-Xtp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

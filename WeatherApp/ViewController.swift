@@ -15,7 +15,7 @@ class ViewController: UIViewController {
     @IBOutlet var cityField: UITextField!
     @IBOutlet var showHourlyButton: UIButton!
 
-    private var weatherService: WeatherService!
+    private var weatherService = WeatherService(apiKey: "e4a61dc4cec8661af3982f8b36b15ef3")
     private let refreshControl = UIRefreshControl()
     private var currentWeather: CurrentWeather?
 
@@ -30,8 +30,6 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        weatherService = WeatherService(apiKey: "e4a61dc4cec8661af3982f8b36b15ef3")
 
         setupTableView()
         setupRefreshControl()
@@ -62,6 +60,7 @@ class ViewController: UIViewController {
     @IBAction func showHourlyForecastTapped(_ sender: UIButton) {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         if let hourlyVC = mainStoryboard.instantiateViewController(withIdentifier: "HourlyForecastViewController") as? HourlyForecastViewController {
+            hourlyVC.city = cityField.text
             present(hourlyVC, animated: true, completion: nil)
         }
     }

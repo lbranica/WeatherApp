@@ -41,7 +41,7 @@ final class WeatherService {
                 case .failure(let error):
                     completion(.failure(error))
                 case .success(let forecast):
-                    print("hourly count: \(forecast.list.count)")
+                    completion(.success(forecast))
                 }
             }
         }.resume()
